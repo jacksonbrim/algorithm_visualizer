@@ -6,7 +6,7 @@ use std::thread::{self, JoinHandle};
 
 use cpal::{
     traits::{DeviceTrait, HostTrait, StreamTrait},
-    Device, FromSample, Host, Sample, SizedSample, StreamConfig, SupportedStreamConfig,
+    Device, FromSample, Host, Sample, StreamConfig,
 };
 pub struct AudioDevice {
     host: Host,
@@ -174,7 +174,7 @@ fn write_data_with_phases<T>(
     output: &mut [T],
     channels: usize,
     next_sample: &mut dyn FnMut() -> f32,
-    phases: Arc<Mutex<Vec<f32>>>,
+    _phases: Arc<Mutex<Vec<f32>>>,
 ) where
     T: Sample + FromSample<f32>,
 {

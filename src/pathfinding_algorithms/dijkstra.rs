@@ -1,8 +1,5 @@
-use crate::map::Map;
-use std::{
-    collections::{BinaryHeap, HashMap, HashSet},
-    time::Duration,
-};
+use crate::pathfinding_algorithms::Map;
+use std::collections::{BinaryHeap, HashMap, HashSet};
 #[derive(Debug)]
 pub struct Dijkstra<'a, 'b> {
     map: &'a Map<'b, 'b>,

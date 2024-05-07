@@ -1,4 +1,4 @@
-use crate::map::Map;
+use crate::pathfinding_algorithms::Map;
 use std::cmp::{Ordering, Reverse};
 use std::collections::{BinaryHeap, HashMap, HashSet};
 use std::time::Duration;

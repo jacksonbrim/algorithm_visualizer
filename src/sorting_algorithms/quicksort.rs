@@ -1,4 +1,4 @@
-use crate::sorting_graph::SortGraph;
+use crate::sorting_algorithms::SortGraph;
 
 pub struct QuickSort<'a, 'b, 'c> {
     pub graph: &'a mut SortGraph<'b, 'c>,

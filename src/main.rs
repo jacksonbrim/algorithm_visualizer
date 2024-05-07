@@ -1,26 +1,14 @@
-pub mod astar;
 pub mod audio;
-pub mod bfs;
-pub mod dijkstra;
-pub mod heapsort;
-pub mod map;
-pub mod mergesort;
-pub mod quicksort;
-pub mod sorting_graph;
+pub mod pathfinding_algorithms;
+pub mod sorting_algorithms;
 
 use std::env;
 use std::thread;
 use std::time::Duration;
 
-use crate::astar::AStar;
 use crate::audio::AudioDevice;
-use crate::bfs::BFS;
-use crate::dijkstra::Dijkstra;
-use crate::heapsort::Heap;
-use crate::map::Map;
-use crate::mergesort::MergeSort;
-use crate::quicksort::QuickSort;
-use crate::sorting_graph::SortGraph;
+use crate::pathfinding_algorithms::{AStar, Dijkstra, Map, BFS};
+use crate::sorting_algorithms::{Heap, MergeSort, QuickSort, SortGraph};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = env::args().collect();

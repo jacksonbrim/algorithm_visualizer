@@ -1,4 +1,4 @@
-use crate::sorting_graph::SortGraph;
+use crate::sorting_algorithms::SortGraph;
 use std::fmt;
 
 pub struct Heap<'a, 'b> {

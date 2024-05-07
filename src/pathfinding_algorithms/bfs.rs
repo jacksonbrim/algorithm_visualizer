@@ -1,4 +1,4 @@
-use crate::map::Map;
+use crate::pathfinding_algorithms::Map;
 use std::collections::{HashMap, HashSet, VecDeque};
 
 pub struct BFS<'a, 'b> {

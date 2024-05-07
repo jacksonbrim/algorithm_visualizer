@@ -1,10 +1,10 @@
 use crate::audio::AudioSignal;
-use colored::{ColoredString, Colorize};
-use rand::{thread_rng, Rng};
+use colored::Colorize;
+use rand::Rng;
+use std::time::Duration;
 use std::time::Instant;
-use std::{io::Write, time::Duration};
 use std::{
-    sync::mpsc::{self, Receiver, Sender},
+    sync::mpsc::Sender,
     thread::{self, JoinHandle},
 };
 pub struct SortGraph<'a, 'b> {
@@ -148,7 +148,7 @@ impl<'a, 'b> SortGraph<'a, 'b> {
         buffer.push_str("\x1B[?25h");
 
         // Print the entire buffer at once to the terminal
-        let start_time = Instant::now();
+        let _start_time = Instant::now();
         println!("{}", buffer);
         self.play_graph(2000);
     }

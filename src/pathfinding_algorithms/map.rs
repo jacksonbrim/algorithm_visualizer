@@ -1,14 +1,13 @@
 use crossterm::{
     cursor::{Hide, MoveTo, RestorePosition, SavePosition, Show},
     style::Print,
-    terminal::{Clear, ClearType, EnterAlternateScreen, LeaveAlternateScreen, ScrollUp},
     ExecutableCommand,
 };
-use std::time::Instant;
-use std::{collections::HashSet, collections::VecDeque, ops::Range};
+
+use std::{collections::HashSet, collections::VecDeque};
 use std::{io::Write, thread::sleep};
 use std::{
-    sync::mpsc::{self, Receiver, Sender},
+    sync::mpsc::{Sender},
     thread::JoinHandle,
 };
 use std::{thread, time::Duration}; // Crossterm handles cursor movement and more
@@ -153,7 +152,7 @@ impl<'a, 'b> Map<'a, 'b> {
     }
     // Generates a maze-like map
     pub fn attempt_generate(&mut self) {
-        let (width, height) = (self.width, self.height);
+        let (_width, _height) = (self.width, self.height);
         let mut rng = rand::thread_rng();
 
         // Initialize all cells as walls
