@@ -32,8 +32,6 @@ impl AudioDevice {
         let device = host
             .default_output_device()
             .expect("failed to find output device");
-        println!("Output device: {}", device.name()?);
-
         let mut config: StreamConfig = device.default_output_config()?.into();
 
         config.buffer_size = cpal::BufferSize::Fixed(128);
