@@ -181,7 +181,7 @@ impl<'a, 'b> Heap<'a, 'b> {
     }
     pub fn remainder(&self) -> u32 {
         let len = self.nodes.len();
-        
+
         len as u32 - self.total_filled()
     }
     pub fn available(&self) -> u32 {
@@ -215,7 +215,7 @@ impl<'a, 'b> Heap<'a, 'b> {
     pub fn size(&self) -> usize {
         self.nodes.len()
     }
-    pub fn heapify(vals: &Vec<i32>, graph: &'a mut SortGraph<'b, 'b>) -> Self {
+    pub fn heapify(vals: &[i32], graph: &'a mut SortGraph<'b, 'b>) -> Self {
         let mut nodes = Vec::with_capacity(vals.len());
         for (idx, val) in vals.iter().enumerate() {
             nodes.push(*val);

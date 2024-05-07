@@ -50,15 +50,15 @@ impl<'a, 'b> MergeSort<'a, 'b> {
         let mut i = begin; // index of left side start
         let mut j = middle; // index of right side start
 
-        for k in begin..end {
+        for (k, val) in dst.iter_mut().enumerate().take(begin).skip(end) {
             if i < middle && (j >= end || self.values[i] <= self.values[j]) {
-                dst[k] = self.values[i];
+                *val = self.values[i];
                 self.graph
                     .display_graph_move_highlights(begin, middle, end, Some((i, k)));
 
                 i += 1;
             } else {
-                dst[k] = self.values[j];
+                *val = self.values[j];
                 self.graph
                     .display_graph_move_highlights(begin, middle, end, Some((j, k)));
                 j += 1;

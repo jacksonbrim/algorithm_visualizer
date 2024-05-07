@@ -1,8 +1,13 @@
 use rand::Rng;
-use std::error::Error;
-use std::sync::mpsc::{self, Receiver, Sender};
-use std::sync::{Arc, Mutex};
-use std::thread::{self, JoinHandle};
+use std::{
+    error::Error,
+    str::FromStr,
+    sync::{
+        mpsc::{self, Receiver, Sender},
+        Arc, Mutex,
+    },
+    thread::{self, JoinHandle},
+};
 
 use cpal::{
     traits::{DeviceTrait, HostTrait, StreamTrait},
@@ -70,7 +75,7 @@ impl AudioDevice {
                 );
                 let err_fn = |err| eprintln!("an error occurred on stream: {}", err);
 
-                let mut phase_increments = Vec::new();
+                //                let mut phase_increments = Vec::new();
 
                 let stream = device
                     .build_output_stream(
@@ -82,9 +87,9 @@ impl AudioDevice {
                                         let mut frequencies_lock =
                                             shared_frequencies.lock().unwrap();
                                         *frequencies_lock = vec![frequency];
-                                        phase_increments = vec![
-                                            frequency * 2.0 * std::f32::consts::PI / sample_rate,
-                                        ];
+                                        //                                        phase_increments = vec![
+                                        //                                            frequency * 2.0 * std::f32::consts::PI / sample_rate,
+                                        //                                        ];
 
                                         // Keep the same phases
                                         let mut phases_lock = shared_phases.lock().unwrap();
@@ -103,10 +108,10 @@ impl AudioDevice {
                                             *frequencies_lock = new_frequencies.clone();
                                         }
 
-                                        phase_increments = new_frequencies
-                                            .iter()
-                                            .map(|&f| f * 2.0 * std::f32::consts::PI / sample_rate)
-                                            .collect();
+                                        //                                        phase_increments = new_frequencies
+                                        //                                            .iter()
+                                        //                                            .map(|&f| f * 2.0 * std::f32::consts::PI / sample_rate)
+                                        //                                            .collect();
                                     }
                                 }
 
@@ -254,9 +259,9 @@ impl Notes {
             notes.push(Note::new(" ", 3, length / 3)?);
         }
 
-        notes.push(Note::new("c", 4, length * 4)?.try_into().unwrap());
+        notes.push(Note::new("c", 4, length * 4)?);
         notes.push(Note::new(" ", 3, length)?);
-        notes.push(Note::new("c", 4, length * 4)?.try_into().unwrap());
+        notes.push(Note::new("c", 4, length * 4)?);
         notes.push(Note::new(" ", 3, length / 3)?);
         for &i in chromatic_scale.iter().rev() {
             let next_note = match i {
@@ -350,36 +355,34 @@ pub enum NoteName {
     BFlat,
     Silence,
 }
-impl NoteName {
-    pub fn from_str(input: &str) -> Result<Self, Box<dyn std::error::Error>> {
-        if input.trim().is_empty() {
-            return Ok(NoteName::Silence);
+impl std::str::FromStr for NoteName {
+    type Err = NoteError;
+
+    fn from_str(input: &str) -> Result<Self, Self::Err> {
+        match input.trim().to_lowercase().as_str() {
+            " " | "" => Ok(NoteName::Silence),
+            "c" => Ok(NoteName::C),
+            "csharp" | "c#" => Ok(NoteName::CSharp),
+            "d" => Ok(NoteName::D),
+            "dsharp" | "d#" => Ok(NoteName::DSharp),
+            "dflat" | "db" => Ok(NoteName::DFlat),
+            "e" => Ok(NoteName::E),
+            "eflat" | "eb" => Ok(NoteName::EFlat),
+            "f" => Ok(NoteName::F),
+            "fsharp" | "f#" => Ok(NoteName::FSharp),
+            "g" => Ok(NoteName::G),
+            "gsharp" | "g#" => Ok(NoteName::GSharp),
+            "gflat" | "gb" => Ok(NoteName::GFlat),
+            "a" => Ok(NoteName::A),
+            "asharp" | "a#" => Ok(NoteName::ASharp),
+            "aflat" | "ab" => Ok(NoteName::AFlat),
+            "b" => Ok(NoteName::B),
+            "bflat" | "bb" => Ok(NoteName::BFlat),
+            _ => Err(NoteError::InvalidNote(input.to_string())),
         }
-        let res = match input {
-            " " => NoteName::Silence,
-            "c" => NoteName::C,
-            "csharp" => NoteName::CSharp,
-            "d" => NoteName::D,
-            "dsharp" => NoteName::DSharp,
-            "dflat" => NoteName::DFlat,
-            "e" => NoteName::E,
-            "eflat" => NoteName::EFlat,
-            "f" => NoteName::F,
-            "fsharp" => NoteName::FSharp,
-            "g" => NoteName::G,
-            "gsharp" => NoteName::GSharp,
-            "gflat" => NoteName::GFlat,
-            "b" => NoteName::B,
-            "bflat" => NoteName::BFlat,
-            "a" => NoteName::A,
-            "asharp" => NoteName::ASharp,
-            "aflat" => NoteName::AFlat,
-            _ => {
-                return Err(Box::new(NoteError::InvalidNote(input.to_string())));
-            }
-        };
-        Ok(res)
     }
+}
+impl NoteName {
     pub fn to_note_index(&self) -> i32 {
         match self {
             NoteName::C => -9,
@@ -429,7 +432,7 @@ impl std::fmt::Display for NoteName {
 }
 
 #[derive(Debug)]
-enum NoteError {
+pub enum NoteError {
     InvalidNote(String),
 }
 
@@ -629,6 +632,6 @@ fn chime_chord(sample_rate: f32, frequencies: Vec<f32>) -> impl FnMut() -> f32 +
 }
 #[cfg(test)]
 mod tests {
-    
+
     fn note_frequency_success() {}
 }

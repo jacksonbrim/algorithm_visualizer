@@ -1,14 +1,15 @@
+#![allow(dead_code)]
 pub mod audio;
 pub mod pathfinding_algorithms;
 pub mod sorting_algorithms;
 
-use std::env;
-use std::thread;
-use std::time::Duration;
+use std::{env, thread, time::Duration};
 
-use crate::audio::AudioDevice;
-use crate::pathfinding_algorithms::{AStar, Dijkstra, Map, BFS};
-use crate::sorting_algorithms::{Heap, MergeSort, QuickSort, SortGraph};
+use crate::{
+    audio::AudioDevice,
+    pathfinding_algorithms::{AStar, Dijkstra, Map, BFS},
+    sorting_algorithms::{Heap, MergeSort, QuickSort, SortGraph},
+};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = env::args().collect();

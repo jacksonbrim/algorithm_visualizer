@@ -1,11 +1,10 @@
 use crate::audio::AudioSignal;
 use colored::Colorize;
 use rand::Rng;
-use std::time::Duration;
-use std::time::Instant;
 use std::{
     sync::mpsc::Sender,
     thread::{self, JoinHandle},
+    time::{Duration, Instant},
 };
 pub struct SortGraph<'a, 'b> {
     pub title: String,
@@ -26,9 +25,7 @@ impl<'a, 'b> SortGraph<'a, 'b> {
         audio_handle: &'b mut Option<JoinHandle<()>>,
     ) -> Self {
         let mut rng = rand::thread_rng();
-        let values = (0..=WIDTH)
-            .map(|_| rng.gen_range(0..=HEIGHT))
-            .collect();
+        let values = (0..=WIDTH).map(|_| rng.gen_range(0..=HEIGHT)).collect();
         SortGraph {
             title: title.to_string(),
             values,
@@ -132,12 +129,12 @@ impl<'a, 'b> SortGraph<'a, 'b> {
         buffer.push_str(&format!("{}\n", self.title));
         let height = self.max_height;
         for y in 0..=height {
-            for (_, val) in self.values.iter().enumerate() {
+            for val in self.values.iter() {
                 let y_pos = height - y;
                 buffer += match y_pos {
-                        pos if *val >= pos => "[x]",
-                        _ => "   ",
-                    };
+                    pos if *val >= pos => "[x]",
+                    _ => "   ",
+                };
             }
             buffer.push('\n'); // Add a new line at the end of each row
         }

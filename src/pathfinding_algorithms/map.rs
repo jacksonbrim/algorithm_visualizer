@@ -4,13 +4,14 @@ use crossterm::{
     ExecutableCommand,
 };
 
-use std::{collections::HashSet, collections::VecDeque};
-use std::{io::Write, thread::sleep};
 use std::{
-    sync::mpsc::{Sender},
-    thread::JoinHandle,
-};
-use std::{thread, time::Duration}; // Crossterm handles cursor movement and more
+    collections::{HashSet, VecDeque},
+    io::Write,
+    sync::mpsc::Sender,
+    thread,
+    thread::{sleep, JoinHandle},
+    time::Duration,
+}; // Crossterm handles cursor movement and more
 
 use crate::audio::AudioSignal;
 use colored::{ColoredString, Colorize};
@@ -370,8 +371,7 @@ impl<'a, 'b> Map<'a, 'b> {
         for (dx, dy) in [(-1, 0), (1, 0), (0, -1), (0, 1)] {
             let nx = (x as isize + dx) as usize;
             let ny = (y as isize + dy) as usize;
-            if nx < self.width && ny < self.height && self.is_traversable(nx, ny)
-            {
+            if nx < self.width && ny < self.height && self.is_traversable(nx, ny) {
                 neighbors.push((nx, ny));
             }
         }
@@ -389,83 +389,5 @@ impl<'a, 'b> Map<'a, 'b> {
 
     pub fn cost(&self, _from: (usize, usize), _to: (usize, usize)) -> u32 {
         1 // Uniform cost; adjust as necessary for different terrains or obstacles
-    }
-    pub fn move_back(&mut self) {
-        if self.visited.is_empty() {
-            return;
-        }
-        let last_position = self.visited.pop().unwrap();
-        self.current = last_position;
-    }
-    pub fn move_direction(&mut self, direction: &Direction) {
-        match direction {
-            Direction::Left => self.move_left(),
-            Direction::Up => self.move_up(),
-            Direction::Right => self.move_right(),
-            Direction::Down => self.move_down(),
-        }
-    }
-    // Movement methods
-    fn move_up(&mut self) {
-        if self.current.0 <= 0 {
-            return;
-        }
-        let next_location = (self.current.0 - 1, self.current.1);
-        if next_location == self.start {
-            return;
-        }
-        if self.current.0 > 0 && self.is_traversable(self.current.0 - 1, self.current.1) {
-            self.current.0 -= 1;
-            self.visited.push(self.current);
-        }
-    }
-
-    fn move_down(&mut self) {
-        if self.current.0 < self.height {
-            return;
-        }
-        let next_location = (self.current.0 + 1, self.current.1);
-        if next_location == self.start {
-            return;
-        }
-
-        if self.current.0 < self.height - 1
-            && self.is_traversable(self.current.0 + 1, self.current.1)
-        {
-            self.current.0 += 1;
-            self.visited.push(self.current);
-        }
-    }
-
-    fn move_left(&mut self) {
-        if self.current.1 <= 0 {
-            return;
-        }
-        let next_location = (self.current.0, self.current.1 - 1);
-        if next_location == self.start {
-            return;
-        }
-
-        if self.current.1 > 0 && self.is_traversable(self.current.0, self.current.1 - 1) {
-            self.current.1 -= 1;
-            self.visited.push(self.current);
-        }
-    }
-
-    fn move_right(&mut self) {
-        if self.current.1 >= self.width - 1 {
-            return;
-        }
-        let next_location = (self.current.0, self.current.1 + 1);
-        if next_location == self.start {
-            return;
-        }
-
-        if self.current.1 < self.width - 1
-            && self.is_traversable(self.current.0, self.current.1 + 1)
-        {
-            self.current.1 += 1;
-            self.visited.push(self.current);
-        }
     }
 }

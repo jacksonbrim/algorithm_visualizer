@@ -1,7 +1,9 @@
 use crate::pathfinding_algorithms::Map;
-use std::cmp::{Ordering, Reverse};
-use std::collections::{BinaryHeap, HashMap, HashSet};
-use std::time::Duration;
+use std::{
+    cmp::{Ordering, Reverse},
+    collections::{BinaryHeap, HashMap, HashSet},
+    time::Duration,
+};
 
 // Assuming 'Map' is defined elsewhere and it has 'is_traversable' and 'get_neighbors' methods.
 struct Node {
