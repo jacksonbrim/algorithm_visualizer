@@ -1,12 +1,12 @@
 use crate::sorting_graph::SortGraph;
 
-pub struct MergeSort<'a> {
-    pub graph: &'a mut SortGraph,
+pub struct MergeSort<'a, 'b> {
+    pub graph: &'a mut SortGraph<'b, 'b>,
     pub values: Vec<i32>,
 }
 
-impl<'a> MergeSort<'a> {
-    pub fn new(graph: &'a mut SortGraph) -> Self {
+impl<'a, 'b> MergeSort<'a, 'b> {
+    pub fn new(graph: &'a mut SortGraph<'b, 'b>) -> Self {
         let values = graph.values.clone();
         MergeSort {
             graph,

@@ -4,16 +4,16 @@ use std::{
     time::Duration,
 };
 #[derive(Debug)]
-pub struct Dijkstra<'a> {
-    map: &'a Map,
+pub struct Dijkstra<'a, 'b> {
+    map: &'a Map<'b, 'b>,
     distances: HashMap<(usize, usize), u32>,
     priority_queue: BinaryHeap<(i32, (usize, usize))>, // Use negative cost for max-heap behavior
     visited: HashSet<(usize, usize)>,
     predecessors: HashMap<(usize, usize), (usize, usize)>, // Store each node's predecessor
 }
 
-impl<'a> Dijkstra<'a> {
-    pub fn new(map: &'a Map) -> Self {
+impl<'a, 'b> Dijkstra<'a, 'b> {
+    pub fn new(map: &'a Map<'b, 'b>) -> Self {
         let mut distances = HashMap::new();
         let mut priority_queue = BinaryHeap::new();
 

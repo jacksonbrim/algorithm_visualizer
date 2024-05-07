@@ -1,13 +1,12 @@
 use crate::sorting_graph::SortGraph;
-use std::{cell::RefCell, rc::Rc, task::Wake};
-use std::{fmt, fmt::Write};
+use std::fmt;
 
-pub struct Heap<'a> {
-    pub graph: &'a mut SortGraph,
+pub struct Heap<'a, 'b> {
+    pub graph: &'a mut SortGraph<'b, 'b>,
     pub nodes: Vec<i32>,
 }
 
-impl fmt::Display for Heap<'_> {
+impl fmt::Display for Heap<'_, '_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         for (idx, &val) in self.nodes.iter().enumerate() {
             let left_idx = 2 * idx + 1;
@@ -33,15 +32,15 @@ impl fmt::Display for Heap<'_> {
     }
 }
 
-impl<'a> Heap<'a> {
-    pub fn new(graph: &'a mut SortGraph) -> Self {
+impl<'a, 'b> Heap<'a, 'b> {
+    pub fn new(graph: &'a mut SortGraph<'b, 'b>) -> Self {
         Self {
             graph,
             nodes: Vec::new(),
         }
     }
 
-    pub fn from_graph(graph: &'a mut SortGraph) -> Self {
+    pub fn from_graph(graph: &'a mut SortGraph<'b, 'b>) -> Self {
         let nodes = graph.values.clone();
         Self { graph, nodes }
     }
@@ -216,7 +215,7 @@ impl<'a> Heap<'a> {
     pub fn size(&self) -> usize {
         self.nodes.len()
     }
-    pub fn heapify(vals: &Vec<i32>, graph: &'a mut SortGraph) -> Self {
+    pub fn heapify(vals: &Vec<i32>, graph: &'a mut SortGraph<'b, 'b>) -> Self {
         let mut nodes = Vec::with_capacity(vals.len());
         for (idx, val) in vals.iter().enumerate() {
             nodes.push(*val);

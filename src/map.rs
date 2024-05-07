@@ -28,7 +28,7 @@ pub enum Direction {
 }
 
 #[derive(Debug)]
-pub struct Map {
+pub struct Map<'a, 'b> {
     pub graph_title: String,
     pub graph: Vec<Vec<u8>>, // Using a Vec<Vec<u8>> for simplicity, 0 is non-traversable, 1 is traversable
     pub width: usize,
@@ -37,15 +37,15 @@ pub struct Map {
     pub visited: Vec<(usize, usize)>,
     pub start: (usize, usize), // Coordinates for the start square
     pub end: (usize, usize),   // Coordinates for the end square
-    pub audio_sender: Option<Sender<AudioSignal>>, // Audio sender for live updates
-    pub audio_handle: Option<JoinHandle<()>>, // Audio thread handle
+    pub audio_sender: &'a mut Option<Sender<AudioSignal>>, // Audio sender for live updates
+    pub audio_handle: &'b mut Option<JoinHandle<()>>, // Audio thread handle
 }
 
-impl Map {
+impl<'a, 'b> Map<'a, 'b> {
     pub fn new(
         title: &str,
-        audio_sender: Option<Sender<AudioSignal>>,
-        audio_handle: Option<JoinHandle<()>>,
+        audio_sender: &'a mut Option<Sender<AudioSignal>>,
+        audio_handle: &'b mut Option<JoinHandle<()>>,
     ) -> Self {
         let mut rng = thread_rng(); // Get a random number generator
 

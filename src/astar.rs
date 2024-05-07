@@ -31,8 +31,8 @@ impl PartialOrd for Node {
     }
 }
 
-pub struct AStar<'a> {
-    map: &'a Map,
+pub struct AStar<'a, 'b> {
+    map: &'a Map<'b, 'b>,
     start: (usize, usize),
     end: (usize, usize),
     open_set: BinaryHeap<Reverse<Node>>, // Use Reverse for min-heap behavior
@@ -41,8 +41,8 @@ pub struct AStar<'a> {
     visited: HashSet<(usize, usize)>,
 }
 
-impl<'a> AStar<'a> {
-    pub fn new(map: &'a Map) -> Self {
+impl<'a, 'b> AStar<'a, 'b> {
+    pub fn new(map: &'a Map<'b, 'b>) -> Self {
         let start = map.start;
         let end = map.end;
         let mut open_set = BinaryHeap::new();

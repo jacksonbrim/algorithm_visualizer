@@ -1,12 +1,12 @@
 use crate::sorting_graph::SortGraph;
 
-pub struct QuickSort<'a> {
-    pub graph: &'a mut SortGraph,
+pub struct QuickSort<'a, 'b, 'c> {
+    pub graph: &'a mut SortGraph<'b, 'c>,
     pub values: Vec<i32>,
 }
 
-impl<'a> QuickSort<'a> {
-    pub fn new(graph: &'a mut SortGraph) -> Self {
+impl<'a, 'b, 'c> QuickSort<'a, 'b, 'c> {
+    pub fn new(graph: &'a mut SortGraph<'b, 'c>) -> Self {
         let values = graph.values.clone();
         QuickSort {
             graph,

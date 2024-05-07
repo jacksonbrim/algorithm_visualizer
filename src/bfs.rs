@@ -1,8 +1,8 @@
 use crate::map::Map;
 use std::collections::{HashMap, HashSet, VecDeque};
 
-pub struct BFS<'a> {
-    pub map: &'a Map,
+pub struct BFS<'a, 'b> {
+    pub map: &'a Map<'b, 'b>,
     start: (usize, usize),
     end: (usize, usize),
     visited: HashSet<(usize, usize)>,
@@ -10,8 +10,8 @@ pub struct BFS<'a> {
     parent: HashMap<(usize, usize), (usize, usize)>, // To track the path
 }
 
-impl<'a> BFS<'a> {
-    pub fn new(map: &'a Map) -> Self {
+impl<'a, 'b> BFS<'a, 'b> {
+    pub fn new(map: &'a Map<'b, 'b>) -> Self {
         let start = map.start;
         let end = map.end;
         let mut bfs = BFS {

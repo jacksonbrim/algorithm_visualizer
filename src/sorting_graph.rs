@@ -7,23 +7,23 @@ use std::{
     sync::mpsc::{self, Receiver, Sender},
     thread::{self, JoinHandle},
 };
-pub struct SortGraph {
+pub struct SortGraph<'a, 'b> {
     pub title: String,
     pub values: Vec<i32>,
     pub max_height: i32,
-    pub audio_sender: Option<Sender<AudioSignal>>, // Audio sender for live updates
-    pub audio_handle: Option<JoinHandle<()>>,      // Audio thread handle
+    pub audio_sender: &'a mut Option<Sender<AudioSignal>>, // Audio sender for live updates
+    pub audio_handle: &'b mut Option<JoinHandle<()>>,      // Audio thread handle
 }
 
 const WIDTH: i32 = 30;
 const HEIGHT: i32 = 50;
 
-impl SortGraph {
+impl<'a, 'b> SortGraph<'a, 'b> {
     /// Creates a new `SortGraph` with randomly generated values.
     pub fn new(
         title: &str,
-        audio_sender: Option<Sender<AudioSignal>>,
-        audio_handle: Option<JoinHandle<()>>,
+        audio_sender: &'a mut Option<Sender<AudioSignal>>,
+        audio_handle: &'b mut Option<JoinHandle<()>>,
     ) -> Self {
         let mut rng = rand::thread_rng();
         let values = (0..=WIDTH)
@@ -36,6 +36,9 @@ impl SortGraph {
             audio_sender,
             audio_handle,
         }
+    }
+    pub fn set_title(&mut self, title: &str) {
+        self.title = title.to_string();
     }
     pub fn update_audio(&self, frequency: f32) {
         if let Some(ref sender) = self.audio_sender {
