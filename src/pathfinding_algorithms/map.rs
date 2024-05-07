@@ -113,8 +113,8 @@ impl<'a, 'b> Map<'a, 'b> {
         if let Some(sender) = &self.audio_sender {
             let freq =
                 440.0 + (440.0 * (1.0 - distance as f32 / (self.height * self.width) as f32));
-            let freq_x = 440.0 + (440.0 * (1.0 - x as f32 / self.width as f32));
-            let freq_y = 440.0 + (440.0 * (1.0 - y as f32 / self.height as f32));
+            let freq_x = 440.0 + (440.0 * (1.0 - x / self.width as f32));
+            let freq_y = 440.0 + (440.0 * (1.0 - y / self.height as f32));
             sender
                 .send(AudioSignal::Chord(vec![freq, freq_y, freq_x]))
                 .unwrap_or_default();
@@ -370,7 +370,7 @@ impl<'a, 'b> Map<'a, 'b> {
         for (dx, dy) in [(-1, 0), (1, 0), (0, -1), (0, 1)] {
             let nx = (x as isize + dx) as usize;
             let ny = (y as isize + dy) as usize;
-            if nx < self.width && ny < self.height && self.is_traversable(nx as usize, ny as usize)
+            if nx < self.width && ny < self.height && self.is_traversable(nx, ny)
             {
                 neighbors.push((nx, ny));
             }
@@ -421,7 +421,7 @@ impl<'a, 'b> Map<'a, 'b> {
     }
 
     fn move_down(&mut self) {
-        if self.current.0 <= self.height - 1 {
+        if self.current.0 < self.height {
             return;
         }
         let next_location = (self.current.0 + 1, self.current.1);

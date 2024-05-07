@@ -105,7 +105,7 @@ impl<'a, 'b> AStar<'a, 'b> {
     }
     pub fn display_visited(&self) {
         let visited = &self.visited;
-        self.map.display_visited(&visited);
+        self.map.display_visited(visited);
     }
     pub fn display_path(&self) {
         let path = self.reconstruct_path(self.end);

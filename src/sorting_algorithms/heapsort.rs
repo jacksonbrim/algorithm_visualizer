@@ -13,7 +13,7 @@ impl fmt::Display for Heap<'_, '_> {
             let right_idx = 2 * idx + 2;
 
             if idx > self.total_filled() as usize {
-                write!(f, "{}\n", val)?;
+                writeln!(f, "{}", val)?;
                 continue;
             }
 
@@ -26,7 +26,7 @@ impl fmt::Display for Heap<'_, '_> {
                 write!(f, "{}", self.nodes[right_idx])?;
             }
 
-            write!(f, "\n")?;
+            writeln!(f)?;
         }
         Ok(())
     }
@@ -181,8 +181,8 @@ impl<'a, 'b> Heap<'a, 'b> {
     }
     pub fn remainder(&self) -> u32 {
         let len = self.nodes.len();
-        let remainder = len as u32 - self.total_filled();
-        remainder
+        
+        len as u32 - self.total_filled()
     }
     pub fn available(&self) -> u32 {
         self.nodes.len() as u32 - self.remainder()

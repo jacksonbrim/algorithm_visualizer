@@ -76,7 +76,7 @@ impl<'a, 'b> Dijkstra<'a, 'b> {
     }
     pub fn display_visited(&self) {
         let visited = &self.visited;
-        self.map.display_visited(&visited);
+        self.map.display_visited(visited);
     }
     pub fn display_path(&self) {
         let path = self.get_path();

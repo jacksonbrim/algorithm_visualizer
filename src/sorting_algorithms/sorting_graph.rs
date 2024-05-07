@@ -27,7 +27,7 @@ impl<'a, 'b> SortGraph<'a, 'b> {
     ) -> Self {
         let mut rng = rand::thread_rng();
         let values = (0..=WIDTH)
-            .map(|_| rng.gen_range(0..=HEIGHT as i32))
+            .map(|_| rng.gen_range(0..=HEIGHT))
             .collect();
         SortGraph {
             title: title.to_string(),
@@ -101,7 +101,7 @@ impl<'a, 'b> SortGraph<'a, 'b> {
         // Send frequencies to the audio handler one at a time
         if let Some(ref sender) = self.audio_sender {
             for val in self.values.iter() {
-                let frequency = scale_frequency(*val as i32);
+                let frequency = scale_frequency(*val);
                 sender
                     .send(AudioSignal::Single(frequency))
                     .unwrap_or_default();
@@ -134,13 +134,10 @@ impl<'a, 'b> SortGraph<'a, 'b> {
         for y in 0..=height {
             for (_, val) in self.values.iter().enumerate() {
                 let y_pos = height - y;
-                buffer += &format!(
-                    "{}",
-                    match y_pos {
+                buffer += match y_pos {
                         pos if *val >= pos => "[x]",
                         _ => "   ",
-                    }
-                );
+                    };
             }
             buffer.push('\n'); // Add a new line at the end of each row
         }

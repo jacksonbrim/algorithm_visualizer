@@ -46,7 +46,7 @@ impl AudioDevice {
         } else {
             Notes::new(self.config.sample_rate.0 as f32)?
         };
-        play_notes(&self.device, &self.config.clone().into(), notes)
+        play_notes(&self.device, &self.config.clone(), notes)
     }
 
     pub fn play_audio_live(&self) -> (Sender<AudioSignal>, JoinHandle<()>) {
@@ -74,7 +74,7 @@ impl AudioDevice {
 
                 let stream = device
                     .build_output_stream(
-                        &config.into(),
+                        &config,
                         move |data: &mut [f32], _: &cpal::OutputCallbackInfo| {
                             while let Ok(signal) = rx.try_recv() {
                                 match signal {
@@ -297,7 +297,7 @@ impl Notes {
         let _ = down_notes.pop();
         down_notes.reverse();
 
-        let music = vec![up_notes, down_notes].concat();
+        let music = [up_notes, down_notes].concat();
         let mut notes = Vec::with_capacity(music.len());
         let mut total_time: u64 = 0;
         for mus in music.iter() {
@@ -320,7 +320,7 @@ impl Notes {
         let mut notes = Vec::new();
         for (input, octave, time) in music.iter() {
             total_time += time;
-            notes.push(Note::new(*input, *octave, *time)?);
+            notes.push(Note::new(input, *octave, *time)?);
         }
         Ok(Self {
             sample_rate,
@@ -422,7 +422,7 @@ impl NoteName {
 
 impl std::fmt::Display for NoteName {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let res = &format!("{}", self.to_str());
+        let res = &self.to_str().to_string();
         write!(f, "{}", res)?;
         Ok(())
     }
@@ -459,8 +459,8 @@ pub struct Note {
 
 impl Note {
     pub fn new(note: &str, octave: u32, time: u64) -> Result<Self, Box<dyn std::error::Error>> {
-        let clean_note = if note.to_lowercase().starts_with("b") {
-            let new_note = note.to_lowercase().replace("#", "sharp");
+        let clean_note = if note.to_lowercase().starts_with('b') {
+            let new_note = note.to_lowercase().replace('#', "sharp");
             if new_note.contains("flat") || new_note.contains("bb") {
                 "bflat".to_string()
             } else {
@@ -468,8 +468,8 @@ impl Note {
             }
         } else {
             note.to_lowercase()
-                .replace("#", "sharp")
-                .replace("b", "flat")
+                .replace('#', "sharp")
+                .replace('b', "flat")
         };
         let name = NoteName::from_str(&clean_note)?;
         let base_frequency = Note::note_frequency(name);
@@ -629,6 +629,6 @@ fn chime_chord(sample_rate: f32, frequencies: Vec<f32>) -> impl FnMut() -> f32 +
 }
 #[cfg(test)]
 mod tests {
-    use super::*;
+    
     fn note_frequency_success() {}
 }

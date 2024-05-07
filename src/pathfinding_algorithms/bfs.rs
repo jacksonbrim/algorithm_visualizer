@@ -50,7 +50,7 @@ impl<'a, 'b> BFS<'a, 'b> {
     }
     pub fn display_visited(&self) {
         let visited = &self.visited;
-        self.map.display_visited(&visited);
+        self.map.display_visited(visited);
     }
     pub fn display_path(&mut self, path: Option<Vec<(usize, usize)>>) {
         if let Some(p) = path {
