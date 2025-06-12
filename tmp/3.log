@@ -1,0 +1,4 @@
+Entering capture thread (ALSA).
+Cannot open PCM capture device: No such file or directory(-2)
+Exit capture thread fail: -2
+alsabat -C default --standalone

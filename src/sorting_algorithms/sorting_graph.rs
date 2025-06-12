@@ -34,6 +34,11 @@ impl<'a, 'b> SortGraph<'a, 'b> {
             audio_handle,
         }
     }
+    pub fn reset(&mut self) {
+        let mut rng = rand::thread_rng();
+        let values = (0..=WIDTH).map(|_| rng.gen_range(0..=HEIGHT)).collect();
+        self.values = values;
+    }
     pub fn set_title(&mut self, title: &str) {
         self.title = title.to_string();
     }

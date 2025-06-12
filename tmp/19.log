@@ -1,0 +1,4 @@
+Read header error: /tmp/bat.wav.JEy2ok:0
+
+Return value is -5
+alsabat -P default -C default --local -F 16547 --file /tmp/bat.wav.JEy2ok

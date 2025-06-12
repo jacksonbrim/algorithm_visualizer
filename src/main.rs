@@ -15,9 +15,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = env::args().collect();
     let audio_enabled = args.contains(&"audio".to_string());
     let (mut tx, mut handle) = if audio_enabled {
-        let audio_device = AudioDevice::new().unwrap();
-        let (tx, handle) = audio_device.play_audio_live();
-        (Some(tx), Some(handle))
+        let audio_device = AudioDevice::new();
+        if let Ok(dev) = audio_device {
+            let (tx, handle) = dev.play_audio_live();
+            (Some(tx), Some(handle))
+        } else {
+            panic!();
+            (None, None)
+        }
     } else {
         (None, None)
     };
@@ -25,8 +30,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut map = Map::new("dijkstra's Algorithm", &mut tx, &mut handle);
     map.generate();
 
-    Map::clear_screen();
     Map::reset_cursor();
+    Map::clear_screen();
     let mut dijkstra = Dijkstra::new(&map);
     dijkstra.run();
     map.reset("A*Star Algorithm");
@@ -40,18 +45,28 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     map.stop_audio();
     map.join_audio();
 
+    let (mut tx, mut handle) = if audio_enabled {
+        let audio_device = AudioDevice::new();
+        let (tx, handle) = audio_device?.play_audio_live();
+        (Some(tx), Some(handle))
+    } else {
+        (None, None)
+    };
+
     let mut sort_graph = SortGraph::new("Quick Sort Algorithm", &mut tx, &mut handle);
     let mut quick_sort = QuickSort::new(&mut sort_graph);
     quick_sort.sort();
     // Stop the audio thread
     thread::sleep(Duration::from_millis(1000));
 
+    sort_graph.reset();
     sort_graph.set_title("Merge Sort Algorithm");
     let mut merge_sort = MergeSort::new(&mut sort_graph);
     merge_sort.sort();
 
     thread::sleep(Duration::from_millis(1000));
 
+    sort_graph.reset();
     sort_graph.set_title("HeapSort Algorithm");
     let mut heap = Heap::from_graph(&mut sort_graph);
     heap.heapsort();

@@ -1,0 +1,4 @@
+Cannot open file: default_dual.wav -2
+
+Return value is -2
+alsabat -P default -C default --file default_dual.wav

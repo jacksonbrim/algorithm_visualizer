@@ -1,0 +1,5 @@
+Entering playback thread (ALSA).
+Cannot open PCM playback device: No such file or directory(-2)
+Exit playback thread fail: -2
+Entering capture thread (ALSA).
+alsabat -P default -C default -f S32_LE

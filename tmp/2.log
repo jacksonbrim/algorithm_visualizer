@@ -1,0 +1,4 @@
+Entering playback thread (ALSA).
+Cannot open PCM playback device: No such file or directory(-2)
+Exit playback thread fail: -2
+alsabat -P default

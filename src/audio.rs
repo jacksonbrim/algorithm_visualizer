@@ -29,6 +29,15 @@ impl AudioDevice {
     pub fn new() -> Result<Self, Box<dyn Error>> {
         let host = cpal::default_host();
 
+        println!("Available output devices:");
+        for device in host.output_devices().unwrap() {
+            println!("Available device: {}", device.name().unwrap());
+        }
+
+        match host.default_output_device() {
+            Some(device) => println!("Default device: {}", device.name().unwrap()),
+            None => eprintln!("No default output device found."),
+        }
         let device = host
             .default_output_device()
             .expect("failed to find output device");
@@ -85,9 +94,6 @@ impl AudioDevice {
                                         let mut frequencies_lock =
                                             shared_frequencies.lock().unwrap();
                                         *frequencies_lock = vec![frequency];
-                                        //                                        phase_increments = vec![
-                                        //                                            frequency * 2.0 * std::f32::consts::PI / sample_rate,
-                                        //                                        ];
 
                                         // Keep the same phases
                                         let mut phases_lock = shared_phases.lock().unwrap();
@@ -105,11 +111,6 @@ impl AudioDevice {
                                         } else {
                                             *frequencies_lock = new_frequencies.clone();
                                         }
-
-                                        //                                        phase_increments = new_frequencies
-                                        //                                            .iter()
-                                        //                                            .map(|&f| f * 2.0 * std::f32::consts::PI / sample_rate)
-                                        //                                            .collect();
                                     }
                                 }
 
